@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.home-img {
+    width: 50px;
+}
+
+.header {
+
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+}
+
+.links{
+    padding-left: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    list-style: none;
+    margin: 5px;
+}
