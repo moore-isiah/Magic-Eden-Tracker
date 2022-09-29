@@ -1,24 +1,29 @@
 import React from 'react'
 
+import WalletTracker from './WalletTracker'
 
 export default function Homepage(){
 
 
     return (
         <div className='homepage'>
-            <HomeComponent />
-            <HomeComponent />
-            <HomeComponent />
-            <HomeComponent />
+            <div className='homeComponent'>
+            <h1 className='title'></h1>
+            <WalletTracker />
         </div>
-    )
-}
-
-const HomeComponent = () => {
-
-    return (
         <div className='homeComponent'>
-            homepage component
+            <h1 className='title'></h1>
+            
+        </div>
+        <div className='homeComponent'>
+            <h1 className='title'></h1>
+            
+        </div>
+        <div className='homeComponent'>
+            <h1 className='title'></h1>
+            
+        </div>
         </div>
     )
 }
+

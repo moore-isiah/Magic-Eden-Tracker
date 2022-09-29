@@ -4,8 +4,10 @@ import sol from './icons/sol.jpg'
 
 import {Link} from 'react-router-dom'
 
+
 export default function Header(){
 const [open, setOpen] = useState(false);
+
 
 
 return (
@@ -15,10 +17,10 @@ return (
         </Link>
         <h1 className='header-txt'>Solana Trackers</h1>
         <div className='menu-container'>
-            <div className='menu-trigger' onClick={() => {setOpen(!open)}}>
-                <img src={hamburger}></img>
+            <div className='menu-trigger' onClick={() => {setOpen(true)}}>
+                <img src={hamburger} ></img>
             </div>
-            <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
+            <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`} onMouseLeave={() => setOpen(false)}>
                 <ul>
                     <DropdownItem link='/' title='Homepage' />
                     <DropdownItem link='/walletTracker' title='Wallet Tracker' />
@@ -29,6 +31,8 @@ return (
     </div>
 )
 }
+
+
 
 const DropdownItem = props => {
     return (
