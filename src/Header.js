@@ -1,21 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
+import hamburger from './icons/hamburger-menu.svg'
+import sol from './icons/sol.jpg'
+
 import {Link} from 'react-router-dom'
 
 export default function Header(){
+const [open, setOpen] = useState(false);
 
-    const homeImage = <div>
-        <img src={'https://cryptologos.cc/logos/solana-sol-logo.png?v=023'} className='home-img' />
-        <p>tracker</p>
+
+return (
+    <div className='header'>
+        <Link to='/' className='solLogo'>
+            <img src={sol} className='sol' />
+        </Link>
+        <h1 className='header-txt'>Solana Trackers</h1>
+        <div className='menu-container'>
+            <div className='menu-trigger' onClick={() => {setOpen(!open)}}>
+                <img src={hamburger}></img>
+            </div>
+            <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
+                <ul>
+                    <DropdownItem link='/' title='Homepage' />
+                    <DropdownItem link='/walletTracker' title='Wallet Tracker' />
+                    <DropdownItem link='/whaleTracker' title='Whale Tracker' />
+                </ul>
+            </div>
+        </div>
     </div>
+)
+}
 
+const DropdownItem = props => {
     return (
-        <header className='header'>
-            <Link to='/'>{homeImage}</Link>
-            <ul className='links'>
-                <li><Link to='/walletTracker'>Wallet Tracker</Link></li>
-                <li><Link to='/whaleTracker'>Whale Tracker</Link></li>
-                <li><Link to='/whiteListManager'>White List Manager</Link></li>
-            </ul>
-        </header>
+        <Link to={props.link} className='dropdownItem'>{props.title}</Link>
     )
 }
