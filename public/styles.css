@@ -134,4 +134,12 @@
     margin: auto;
   }
 
-  
+  .wallet-tracker {
+    display: flex;
+    justify-content: space-around;
+  }
+  .containers {
+    border: 1px solid black;
+    width: 30vw;
+    text-align: center;
+  }
