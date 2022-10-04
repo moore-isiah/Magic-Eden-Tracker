@@ -5,24 +5,6 @@ export default function WalletTracker(){
     const [wallet, setWallet] = useState('9ZYCXH5L3znQ1fiLHpA4SaQ5NeScWgrCbFjQNoNjR8VW')
     const [userInput, setUserInput] = useState('')
 
-    async function getBuySell(wallet) {
-        let i = 0
-        let tempData = []
-        let returnAmount
-        
-        do{
-            const walletRes = await fetch(`https://api-mainnet.magiceden.dev/v2/wallets/${wallet}/activities?offset=${i * 500}&limit=500`)
-            const walletData = await walletRes.json()
-            tempData = [...tempData, ...walletData]
-            returnAmount = walletData.length
-            i++
-
-        }while(returnAmount === 500)
-
-        return tempData
-        //console.log(tempData)
-    }
-
     async function getData(wal, page){
         const walletRes = await fetch(`https://api-mainnet.magiceden.dev/v2/wallets/9ZYCXH5L3znQ1fiLHpA4SaQ5NeScWgrCbFjQNoNjR8VW/activities?offset=${page * 10}&limit=10`)
         const walletData = await walletRes.json()
@@ -40,12 +22,13 @@ export default function WalletTracker(){
         fetchPreviousPage,
         hasNextPage,
         hasPreviousPage,
-      } = useInfiniteQuery(['transactions'], async ({ pageParam = 0}, wal = wallet) => {
-        const walletRes = await fetch(`https://api-mainnet.magiceden.dev/v2/wallets/${wal}/activities?offset=${pageParam * 10}&limit=10`)
+      } = useInfiniteQuery(['transactions'], async ({ pageParam = 1}) => {
+        const walletRes = await fetch(`https://api-mainnet.magiceden.dev/v2/wallets/9ZYCXH5L3znQ1fiLHpA4SaQ5NeScWgrCbFjQNoNjR8VW/activities?offset=${(pageParam - 1 ) * 10}&limit=10`)
         const data1 = await walletRes.json()
-        console.log(data1)
+        console.log(pageParam)
         return data1
-      })
+      },
+      {getNextPageParam: (lastPage, page) => lastPage.length === 10 ? page.length + 1 : undefined})
 
       console.log(data)
 
@@ -57,6 +40,7 @@ export default function WalletTracker(){
             
             <div className='containers'>
                 <p>Purchases</p>
+                <button onClick={() => fetchNextPage()}>get more</button>
                 
             </div>
             <div className='containers'>
