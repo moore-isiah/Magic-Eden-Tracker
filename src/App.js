@@ -1,7 +1,6 @@
 import React from 'react'
 import {Switch, Route} from 'react-router-dom'
 
-
 import Header from './Header'
 import Homepage from './Homepage'
 import WalletTracker from './WalletTracker'

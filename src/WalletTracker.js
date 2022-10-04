@@ -1,11 +1,57 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { useInfiniteQuery } from 'react-query'
 
 export default function WalletTracker(){
     const [wallet, setWallet] = useState('9ZYCXH5L3znQ1fiLHpA4SaQ5NeScWgrCbFjQNoNjR8VW')
+    const [userInput, setUserInput] = useState('')
+
+    async function getBuySell(wallet) {
+        let i = 0
+        let tempData = []
+        let returnAmount
+        
+        do{
+            const walletRes = await fetch(`https://api-mainnet.magiceden.dev/v2/wallets/${wallet}/activities?offset=${i * 500}&limit=500`)
+            const walletData = await walletRes.json()
+            tempData = [...tempData, ...walletData]
+            returnAmount = walletData.length
+            i++
+
+        }while(returnAmount === 500)
+
+        return tempData
+        //console.log(tempData)
+    }
+
+    async function getData(wal, page){
+        const walletRes = await fetch(`https://api-mainnet.magiceden.dev/v2/wallets/9ZYCXH5L3znQ1fiLHpA4SaQ5NeScWgrCbFjQNoNjR8VW/activities?offset=${page * 10}&limit=10`)
+        const walletData = await walletRes.json()
+        return walletData
+    }
+
+    const {
+        status,
+        data,
+        error,
+        isFetching,
+        isFetchingNextPage,
+        isFetchingPreviousPage,
+        fetchNextPage,
+        fetchPreviousPage,
+        hasNextPage,
+        hasPreviousPage,
+      } = useInfiniteQuery(['transactions'], async ({ pageParam = 0}, wal = wallet) => {
+        const walletRes = await fetch(`https://api-mainnet.magiceden.dev/v2/wallets/${wal}/activities?offset=${pageParam * 10}&limit=10`)
+        const data1 = await walletRes.json()
+        console.log(data1)
+        return data1
+      })
+
+      console.log(data)
 
     return (
-        <>
-        <input type='textbox' value={userInput} onChange={(event) => setUserInput(event.target.value)} placeholder='New Solana Wallet'></input>
+        <> 
+                <input type='textbox' value={userInput} onChange={(event) => setUserInput(event.target.value)} placeholder='New Solana Wallet'></input>
         <button onClick={() => setWallet(userInput)}>Submit Wallet</button>
         <div className='wallet-tracker'>
             
@@ -23,7 +69,7 @@ export default function WalletTracker(){
 }
 
 /*
-const [userInput, setUserInput] = useState('')
+
 const [activityData, setActivityData] = useState({
     buys: [],
     sells: [],
