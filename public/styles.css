@@ -142,4 +142,11 @@
     border: 1px solid black;
     width: 30vw;
     text-align: center;
+    max-height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+
+  .nft-img {
+    width: 50px;
   }
