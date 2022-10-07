@@ -147,6 +147,13 @@
     overflow-x: hidden;
   }
 
+  .scroll-item {
+    display: flex;
+    flex-direction: row;
+    height: 55px;
+    border-bottom: 1px solid black;
+  }
+
   .nft-img {
     width: 50px;
   }
