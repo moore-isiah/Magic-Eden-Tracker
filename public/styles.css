@@ -5,10 +5,19 @@
     --secondary-text-color: #cecece;
     --border-radius: 8px;
     --speed: 500ms;
+    --info-text-color: #D1E3DD;
+    --back-ground-color-1: #32292F;
+    --back-ground-color-2: #575366;
+    --back-ground-color-3: #292227;
+    --border-color: #B8BDB5;
+    --label-color: #6E7DAB;
+    --label-color-2: #5762D5;
   }
-  
+
   body {
     margin: 0;
+    background-color: var(--back-ground-color-1);
+
   }
   
 
@@ -25,7 +34,8 @@
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    box-shadow: 0 2px 1px lightgrey;
+    box-shadow: 0 3px 2px var(--back-ground-color-3);
+    background-color: var(--back-ground-color-3);
   }
 
   .sol {
@@ -38,9 +48,9 @@
     font-size: 50px;
     margin: -2px;
     margin-left: 14%;
-    background-image: linear-gradient(90deg, #DC1FFF, #03E1FF, #00FFA3);
-    -webkit-background-clip: text;
-    color: transparent;
+    color: white;
+    -webkit-text-stroke: 1px var(--border-color);
+
   }
 
   .menu-container{
@@ -130,30 +140,135 @@
   .homeComponent {
     height: calc(100% - 60px);
     width: 49%;
-    border: 1px solid black;
+    border: 1px solid var(--border-color);
     margin: auto;
   }
 
   .wallet-tracker {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    align-items: center;
+    grid-gap: 30px;
+    margin-top: 15px;
   }
-  .containers {
+
+  .wallet-submit {
+    height: 300px;
+    width: 400px;
     border: 1px solid black;
-    width: 30vw;
+  }
+
+  .containers {
+    display: flex;
+    flex-direction: column;
     text-align: center;
-    max-height: 300px;
+    height: 300px;
+    width: 400px;
     overflow: scroll;
     overflow-x: hidden;
+    margin: auto;
+    background-color: var(--back-ground-color-3);
+    box-shadow: 0 0 3px 3px var(--back-ground-color-2);
+    border-radius: 15px;
+  }
+
+  .containers::-webkit-scrollbar { 
+    width: 0 !important;
+  }
+
+  .container-label {
+    color: var(--label-color);
+    position: absolute;
+    display: flex;
+    height: 55px;
+    background-color: var(--back-ground-color-3);
+    width: 400px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  .all-label{
+    width: 500px;
+  }
+
+  .scroll-container {
+    margin-top: 55px;
+    color: var(--label-color-2);
   }
 
   .scroll-item {
     display: flex;
     flex-direction: row;
     height: 55px;
-    border-bottom: 1px solid black;
+    padding: 10px;
+    background-color: var(--back-ground-color-2);
+    border-radius: 15px;
+    margin: 5px;
+    align-items: center;
   }
 
-  .nft-img {
+  .scroll-img {
     width: 50px;
+    margin-left: auto;
+    border: 1px solid purple;
+  }
+  
+  .scroll-info {
+    display: flex;
+    justify-content: space-evenly;
+    color: var(--info-text-color);
+  }
+
+  .type {
+    margin-left: 15px;
+  }
+
+  .sol-logo {
+    height: 15px;
+    margin: 0 5px 0 15px;
+  }
+
+  .meta-data-error{
+    size: 5px;
+    margin-left: 10px;
+  }
+
+  .all-activity {
+    width: 500px;
+  }
+
+  .submit-section {
+    display: flex;
+    align-items: center;
+    height: auto;
+    color: var(--info-text-color);
+  }
+
+  .wallet-textbox {
+    background-color: var(--back-ground-color-1);
+    border: none;
+    margin: 5px;
+    border: 1px solid var(--back-ground-color-2);
+    padding: 5px;
+    border-radius: 10px;
+    color: var(--label-color-2)
+  }
+
+  .wallet-textbox::placeholder {
+    color: var(--label-color-2);
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .submit-wallet-button {
+    color: var(--label-color-2);
+    background-color: var(--back-ground-color-1);
+    border: none;
+    padding: 5px;
+    border-radius: 10px;
+    font-weight: bold;
+    border: 1px solid var(--back-ground-color-2);
   }

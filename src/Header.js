@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import hamburger from './icons/hamburger-menu.svg'
-import sol from './icons/sol.jpg'
+import magicEden from './icons/magicEdenLogo.svg'
 
 import {Link} from 'react-router-dom'
 
@@ -13,9 +13,9 @@ const [open, setOpen] = useState(false);
 return (
     <div className='header'>
         <Link to='/' className='solLogo'>
-            <img src={sol} className='sol' />
+            <img src={magicEden} className='sol' />
         </Link>
-        <h1 className='header-txt'>Solana Trackers</h1>
+        <h1 className='header-txt'>Magic Eden Tracker</h1>
         <div className='menu-container'>
             <div className='menu-trigger' onClick={() => {setOpen(true)}}>
                 <img src={hamburger} ></img>
