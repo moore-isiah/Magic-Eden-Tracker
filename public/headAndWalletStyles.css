@@ -38,25 +38,23 @@
     background-color: var(--back-ground-color-3);
   }
 
-  .sol {
-    width: 50px;
-    margin-top: 4px;
+  .me-logo {
+    height: 50px;
+    margin-top: 5px;
   }
 
 
   .header-txt {
     font-size: 50px;
     margin: -2px;
-    margin-left: 14%;
     color: white;
-    -webkit-text-stroke: 1px var(--border-color);
-
   }
 
   .menu-container{
     display: flex;
     flex-direction: column;
-    
+    z-index: 1;
+    background-color: var(--back-ground-color-3);
   }
 
   .menu-trigger img{
@@ -65,7 +63,6 @@
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
-    background-color: #fff;
     margin-left: 70%;
   }
   
@@ -188,6 +185,7 @@
     border-radius: 15px;
     font-weight: bold;
     font-size: 25px;
+    z-index: 0;
   }
 
   .all-label{
@@ -229,6 +227,7 @@
   .sol-logo {
     height: 15px;
     margin: 0 5px 0 15px;
+    
   }
 
   .meta-data-error{

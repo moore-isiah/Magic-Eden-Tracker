@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import hamburger from './icons/hamburger-menu.svg'
+import hamburger from './icons/hamburger.svg'
 import magicEden from './icons/magicEdenLogo.svg'
 
 import {Link} from 'react-router-dom'
@@ -12,8 +12,8 @@ const [open, setOpen] = useState(false);
 
 return (
     <div className='header'>
-        <Link to='/' className='solLogo'>
-            <img src={magicEden} className='sol' />
+        <Link to='/'>
+            <img src={magicEden} className='me-logo' />
         </Link>
         <h1 className='header-txt'>Magic Eden Tracker</h1>
         <div className='menu-container'>
