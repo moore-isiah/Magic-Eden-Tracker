@@ -4,11 +4,12 @@ import errorImg from './icons/errorImg.png'
 import solLogo from './icons/solana-sol-logo.svg'
 
 //track the buys, sells, sent bids and recieved bids of a specified solana wallet on Magic Eden (ME), all fetches are to different ME end points 
-export default function WalletTracker(){
+const WalletTracker = (props) => {
     const [wallet, setWallet] = useState('9ZYCXH5L3znQ1fiLHpA4SaQ5NeScWgrCbFjQNoNjR8VW')
     const [userInput, setUserInput] = useState('')
     const [photos, setPhotos] = useState([])
-    const [loading, setLoading] = useState(true)
+
+    props?.wallet ? console.log('wallet prop here', props.wallet) : console.log('wallet prop not here')
 
     //using react-query to fetching all transactions from ME
     const {data: allData, fetchNextPage, refetch: refetchTransactions} = useInfiniteQuery(['transactions'], async ({ pageParam = 1}, wal = wallet) => {
@@ -32,6 +33,28 @@ export default function WalletTracker(){
         const bidInD = await bidInRes.json()
         return bidInD
     })
+
+    //once the user inputs a new wallet set the wallet state to the new one and wait a second for it to update then refetch everything above
+    const newWallet = () => {
+        if(userInput.lenght >= 32 && userInput.length <= 44){
+            setWallet(userInput)
+        setTimeout(() => {
+            refetchTransactions()
+            refetchBidsIn()
+            refetchBidsOut()
+        }, 1000)
+        }else {
+            window.alert('Please enter a valid wallet!!!')
+        }
+        
+    }
+
+    const handleScroll = (e) => {
+        const bottom = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight < 1;
+        if(bottom){
+            fetchNextPage()
+        }
+    }
 
     //once the inital fetch of transactions returns allData, use data from allData to do the following fetches
     useEffect(() => {
@@ -82,114 +105,146 @@ export default function WalletTracker(){
 
     //maping through the data, filtering the buys of the provided wallet, then filtering the photos state to find its matching image adn returning the jsx to be displayed
     
-    const buys = allData?.pages.map(page => {
-        let temp = page?.filter(arg => arg.type === 'buyNow' && arg.buyer === wallet)
-        let final = temp.map(item => {
-            let price
-            let tempImg = photos.filter(img => {
-                if(img.mintAddress === item.tokenMint){
-                    price = item.price
-                    return img
-                }})
-            
-            if(tempImg[0]){
-                return (
-                    <div className='scroll-item'>
-                        <div className='scroll-info'>
-                            <div>{tempImg[0]?.name}</div>
-                            <img src={solLogo} className='sol-logo'/>
-                            <div>{price}</div>
-                        </div>
-                        <img src={tempImg[0]?.image} className='scroll-img'/>
-                    </div>
-                )
-            }else{
-                return(
-                    <div className='scroll-item'>
-                         <div className='scroll-info'>
-                            <div>{item.collection}</div>
-                            <div className='meta-data-error'>Loading/Meta Data Not Found</div>
-                        </div>
-                        <img src={errorImg} className='scroll-img'/>
-                    </div>
-                )
-            }
-           
-         })
-         return final
-    })
-    
+    const buys = (
+        <div className='containers' onScroll={handleScroll}>
+            <div className='container-label'>
+                <p>Purchases</p>
+            </div>
+            <div className='scroll-container'>
+                {
+                    allData?.pages.map(page => {
+                        let temp = page?.filter(arg => arg.type === 'buyNow' && arg.buyer === wallet)
+                        let final = temp.map(item => {
+                            let price
+                            let tempImg = photos.filter(img => {
+                                if(img.mintAddress === item.tokenMint){
+                                    price = item.price
+                                    return img
+                                }})
+                            
+                            if(tempImg[0]){
+                                return (
+                                    <div className='scroll-item'>
+                                        <div className='scroll-info'>
+                                            <div>{tempImg[0]?.name}</div>
+                                            <img src={solLogo} className='sol-logo'/>
+                                            <div>{price}</div>
+                                        </div>
+                                        <img src={tempImg[0]?.image} className='scroll-img'/>
+                                    </div>
+                                )
+                            }else{
+                                return(
+                                    <div className='scroll-item'>
+                                        <div className='scroll-info'>
+                                            <div>{item.collection}</div>
+                                            <div className='meta-data-error'>Loading/Meta Data Not Found</div>
+                                        </div>
+                                        <img src={errorImg} className='scroll-img'/>
+                                    </div>
+                                )
+                            }
+                        })
+                        return final
+                    })
+                }
+            </div>
+        </div>
+    )
 
     //same as the previous but for the sells
-    const sells = allData?.pages.map(page => {
-        let temp = page.filter(arg => arg.type === 'buyNow' && arg.seller === wallet)
-        let final = temp.map(item => {
-            let price
-            let tempImg = photos.filter(img => {
-                if(img.mintAddress === item.tokenMint){
-                    price = item.price
-                    return img
-                }})
-            if(tempImg[0]){
-                return (
-                    <div className='scroll-item'>
-                        <div className='scroll-info'>
-                            <div>{tempImg[0]?.name}</div>
-                            <img src={solLogo} className='sol-logo'/>
-                            <div>{price}</div>
-                        </div>
-                        <img src={tempImg[0]?.image} className='scroll-img'/>
-                    </div>
-                    )
-            }else{
-                return(
-                    <div className='scroll-item'>
-                        <div className='scroll-info'>
-                            <div>{item.collection}</div>
-                            <div className='meta-data-error'>Loading/Meta Data Not Found</div>
-                        </div>
-                        <img src={errorImg} className='scroll-img'/>
-                    </div>
-                    )
-            }    
-        })
-        return final
-    })
+    const sells = (
+        <div className='containers' onScroll={handleScroll}>
+            <div className='container-label'>
+                <p>Sales</p>
+            </div>
+            <div className='scroll-container'>
+                {
+                    allData?.pages.map(page => {
+                        let temp = page.filter(arg => arg.type === 'buyNow' && arg.seller === wallet)
+                        let final = temp.map(item => {
+                            let price
+                            let tempImg = photos.filter(img => {
+                                if(img.mintAddress === item.tokenMint){
+                                    price = item.price
+                                    return img
+                                }})
+                            if(tempImg[0]){
+                                return (
+                                    <div className='scroll-item'>
+                                        <div className='scroll-info'>
+                                            <div>{tempImg[0]?.name}</div>
+                                            <img src={solLogo} className='sol-logo'/>
+                                            <div>{price}</div>
+                                        </div>
+                                        <img src={tempImg[0]?.image} className='scroll-img'/>
+                                    </div>
+                                    )
+                            }else{
+                                return(
+                                    <div className='scroll-item'>
+                                        <div className='scroll-info'>
+                                            <div>{item.collection}</div>
+                                            <div className='meta-data-error'>Loading/Meta Data Not Found</div>
+                                        </div>
+                                        <img src={errorImg} className='scroll-img'/>
+                                    </div>
+                                )
+                            }    
+                        })
+                        return final
+                    })
+                }
+            </div>
+        </div> 
+    )
 
-    const allActivity =  allData?.pages.map(page => {
-        let final = page.map(item => {
-            let price
-            let tempImg = photos.filter(img => {
-                if(img.mintAddress === item.tokenMint){
-                    price = item.price
-                    return img
-                }})
-            if(tempImg[0]){
-                return (
-                    <div className='scroll-item'>
-                        <div className='scroll-info'>
-                            <div>{tempImg[0]?.name}</div>
-                            <img src={solLogo} className='sol-logo'/>
-                            <div>{price}</div>
-                            <div className='type'>{item.type}</div>
-                        </div>
-                        <img src={tempImg[0]?.image} className='scroll-img'/>
-                    </div>
-                    )
-            }else{
-                return(
-                    <div className='scroll-item'>
-                        <div className='scroll-info'>
-                            <div>{item.collection}</div>
-                            <div className='meta-data-error'>Loading/Meta Data Not Found</div>
-                        </div>
-                        <img src={errorImg} className='scroll-img'/>
-                    </div>
-                    )
-            }    
-        })
-        return final
-    })
+    const allActivity =  (
+        <div className='containers all-activity' onScroll={handleScroll}>
+                <div className='container-label all-label'>
+                    <p>All Activity</p>
+                </div>
+                <div className='scroll-container'>
+                    {
+                        allData?.pages.map(page => {
+                            let final = page.map(item => {
+                                let price
+                                let tempImg = photos.filter(img => {
+                                    if(img.mintAddress === item.tokenMint){
+                                        price = item.price
+                                        return img
+                                    }})
+                                if(tempImg[0]){
+                                    return (
+                                        <div className='scroll-item'>
+                                            <div className='scroll-info'>
+                                                <div>{tempImg[0]?.name}</div>
+                                                <img src={solLogo} className='sol-logo'/>
+                                                <div>{price}</div>
+                                                <div className='type'>{item.type}</div>
+                                            </div>
+                                            <img src={tempImg[0]?.image} className='scroll-img'/>
+                                        </div>
+                                        )
+                                }else{
+                                    return(
+                                        <div className='scroll-item'>
+                                            <div className='scroll-info'>
+                                                <div>{item.collection}</div>
+                                                <div className='meta-data-error'>Loading/Meta Data Not Found</div>
+                                            </div>
+                                            <img src={errorImg} className='scroll-img'/>
+                                        </div>
+                                        )
+                                }    
+                            })
+                            return final
+                        })
+                    }
+                </div>
+            </div>
+        
+    )
 
     //same as the previous two but for sent bids
     const bidsOut = bidOutData?.map(item => {
@@ -211,43 +266,14 @@ export default function WalletTracker(){
                 <img src={tempImg[0]?.image ? tempImg[0].image : errorImg} className='scroll-img'/>
             </div>
         )
-})
+    })
 
-    //once the user inputs a new wallet set the wallet state to the new one and wait a second for it to update then refetch everything above
-    const newWallet = () => {
-        if(userInput.lenght >= 32 && userInput.length <= 44){
-            setWallet(userInput)
-        setTimeout(() => {
-            refetchTransactions()
-            refetchBidsIn()
-            refetchBidsOut()
-        }, 1000)
-        }else {
-            window.alert('Please enter a valid wallet!!!')
-        }
-        
-    }
-
-    const handleScroll = (e) => {
-        const bottom = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight < 1;
-        if(bottom){
-            fetchNextPage()
-        }
-      }
     
-
     return (
 
         <div className='wallet-tracker'>
-            
-            <div className='containers' onScroll={handleScroll}>
-                <div className='container-label'>
-                    <p>Purchases</p>
-                </div>
-                <div className='scroll-container'>
-                    {buys}
-                </div>
-            </div>
+
+            {buys}
 
             <div className='containers submit-section'>
                 <input type='textbox' className='wallet-textbox' value={userInput} onChange={(event) => setUserInput(event.target.value)} placeholder='Enter New Solana Wallet' />
@@ -255,14 +281,7 @@ export default function WalletTracker(){
                 <p>Use the default wallet to test the website or submit your own and track your own activity.</p>
             </div>
 
-            <div className='containers' onScroll={handleScroll}>
-                <div className='container-label'>
-                    <p>Sales</p>
-                </div>
-                <div className='scroll-container'>
-                    {sells}
-                </div>
-            </div>
+           {sells}
 
             <div className='containers'>
                 <div className='container-label'>
@@ -273,14 +292,7 @@ export default function WalletTracker(){
                 </div>
             </div>
 
-            <div className='containers all-activity' onScroll={handleScroll}>
-                <div className='container-label all-label'>
-                    <p>All Activity</p>
-                </div>
-                <div className='scroll-container'>
-                    {allActivity}
-                </div>
-            </div>
+            {allActivity}
 
             <div className='containers'>
                 <div className='container-label'>
@@ -294,3 +306,5 @@ export default function WalletTracker(){
         </div>
     )
 }
+
+export default WalletTracker
