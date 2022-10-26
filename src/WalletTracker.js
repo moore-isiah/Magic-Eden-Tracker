@@ -4,12 +4,9 @@ import errorImg from './icons/errorImg.png'
 import solLogo from './icons/solana-sol-logo.svg'
 
 //track the buys, sells, sent bids and recieved bids of a specified solana wallet on Magic Eden (ME), all fetches are to different ME end points 
-const WalletTracker = (props) => {
+const WalletTracker = () => {
     const [wallet, setWallet] = useState('9ZYCXH5L3znQ1fiLHpA4SaQ5NeScWgrCbFjQNoNjR8VW')
     const [userInput, setUserInput] = useState('')
-    const [photos, setPhotos] = useState([])
-
-    props?.wallet ? console.log('wallet prop here', props.wallet) : console.log('wallet prop not here')
 
     //using react-query to fetching all transactions from ME
     const {data: allData, fetchNextPage, refetch: refetchTransactions} = useInfiniteQuery(['transactions'], async ({ pageParam = 1}, wal = wallet) => {
@@ -36,7 +33,7 @@ const WalletTracker = (props) => {
 
     //once the user inputs a new wallet set the wallet state to the new one and wait a second for it to update then refetch everything above
     const newWallet = () => {
-        if(userInput.lenght >= 32 && userInput.length <= 44){
+        if(userInput.length >= 32 && userInput.length <= 44){
             setWallet(userInput)
         setTimeout(() => {
             refetchTransactions()
@@ -46,7 +43,6 @@ const WalletTracker = (props) => {
         }else {
             window.alert('Please enter a valid wallet!!!')
         }
-        
     }
 
     const handleScroll = (e) => {
@@ -56,52 +52,46 @@ const WalletTracker = (props) => {
         }
     }
 
-    //once the inital fetch of transactions returns allData, use data from allData to do the following fetches
-    useEffect(() => {
-        //itterate through the responses from the first fetch to fetch the meta data for each nft based on the tokenMint address of said nft, then add it to the photos state
-        async function getActivityPhotos(){ 
-            let tempArr = []
-            for(let i = 0; i < allData?.pages.length; i++){
-                for(let j = 0; j < allData.pages[i].length; j++){
-                    if((!tempArr.find(im => im.mintAddress == allData.pages[i][j].tokenMint)) && (!photos.find(im => im.mintAddress == allData.pages[i][j].tokenMint))){
-                        const imgRes = await fetch(`https://api-mainnet.magiceden.dev/v2/tokens/${allData.pages[i][j].tokenMint}`)
-                        const imgData = await imgRes.json()
-                        tempArr.push(imgData)                 
-                    }
-                }
-            }
-           setPhotos([...photos, ...tempArr])
+    const ScrollItem = (props) =>{
+        const {data, isLoading, isError} = useQuery([props.tokenMint], async ({}, token = props.tokenMint) => {
+            const imgRes = await fetch(`https://api-mainnet.magiceden.dev/v2/tokens/${token}`)
+            const imgData = await imgRes.json()
+            return imgData
+        })
+        if(isLoading){
+            <div className='scroll-item'>
+                <div className='scroll-info'>Loading...</div>
+            </div>
+        }else if(isError){
+            <div className='scroll-item'>
+                <div className='scroll-info'>Error Fetching Data</div>
+            </div>
+        }else{
+            if(data.image){
+                return (
+                    <div className='scroll-item'>
+                        <div className='scroll-info'>
+                            <div>{data.name}</div>
+                            <img src={solLogo} className='sol-logo'/>
+                            <div>{props.price}</div>
+                            {props.type ? (<div className='type'>{props.type}</div>) : null}
+                        </div>
+                        <img src={data.image} className='scroll-img'/>
+                    </div>
+                )
+           }else{
+            return (
+                <div className='scroll-item'>
+                    <div className='scroll-info'>
+                        <div>Error Fetching Meta Data</div>
+                    </div>
+                    <img src={errorImg} className='scroll-img'/>
+                </div>
+            
+            )
+           }
         }
-
-        //same as last fetch but for sent bids
-        async function getBidOutPhotos() {
-            let tempArr = []
-            for(let i = 0; i < bidOutData?.length; i++){
-                const bidPhotoRes = await fetch(`https://api-mainnet.magiceden.dev/v2/tokens/${bidOutData[i].tokenMint}`)
-                const bidPhotoData = await bidPhotoRes.json()
-                tempArr.push(bidPhotoData)
-            }
-            setPhotos([...photos, ...tempArr])
-        }
-
-        //same as last two but for recieved bids
-        async function getBidInPhotos() {
-            let tempArr = []
-            for(let i = 0; i < bidInData?.length; i++){
-                const bidPhotoRes = await fetch(`https://api-mainnet.magiceden.dev/v2/tokens/${bidInData[i].tokenMint}`)
-                const bidPhotoData = await bidPhotoRes.json()
-                tempArr.push(bidPhotoData)
-            }
-            setPhotos([...photos, ...tempArr])
-        }
-
-
-        getActivityPhotos()
-        getBidOutPhotos()
-        getBidInPhotos()
-        console.log(allData)
-    }, [allData])
-    
+    }
 
     //maping through the data, filtering the buys of the provided wallet, then filtering the photos state to find its matching image adn returning the jsx to be displayed
     
@@ -115,35 +105,7 @@ const WalletTracker = (props) => {
                     allData?.pages.map(page => {
                         let temp = page?.filter(arg => arg.type === 'buyNow' && arg.buyer === wallet)
                         let final = temp.map(item => {
-                            let price
-                            let tempImg = photos.filter(img => {
-                                if(img.mintAddress === item.tokenMint){
-                                    price = item.price
-                                    return img
-                                }})
-                            
-                            if(tempImg[0]){
-                                return (
-                                    <div className='scroll-item'>
-                                        <div className='scroll-info'>
-                                            <div>{tempImg[0]?.name}</div>
-                                            <img src={solLogo} className='sol-logo'/>
-                                            <div>{price}</div>
-                                        </div>
-                                        <img src={tempImg[0]?.image} className='scroll-img'/>
-                                    </div>
-                                )
-                            }else{
-                                return(
-                                    <div className='scroll-item'>
-                                        <div className='scroll-info'>
-                                            <div>{item.collection}</div>
-                                            <div className='meta-data-error'>Loading/Meta Data Not Found</div>
-                                        </div>
-                                        <img src={errorImg} className='scroll-img'/>
-                                    </div>
-                                )
-                            }
+                            return <ScrollItem tokenMint={item.tokenMint} price={item.price} />
                         })
                         return final
                     })
@@ -163,34 +125,7 @@ const WalletTracker = (props) => {
                     allData?.pages.map(page => {
                         let temp = page.filter(arg => arg.type === 'buyNow' && arg.seller === wallet)
                         let final = temp.map(item => {
-                            let price
-                            let tempImg = photos.filter(img => {
-                                if(img.mintAddress === item.tokenMint){
-                                    price = item.price
-                                    return img
-                                }})
-                            if(tempImg[0]){
-                                return (
-                                    <div className='scroll-item'>
-                                        <div className='scroll-info'>
-                                            <div>{tempImg[0]?.name}</div>
-                                            <img src={solLogo} className='sol-logo'/>
-                                            <div>{price}</div>
-                                        </div>
-                                        <img src={tempImg[0]?.image} className='scroll-img'/>
-                                    </div>
-                                    )
-                            }else{
-                                return(
-                                    <div className='scroll-item'>
-                                        <div className='scroll-info'>
-                                            <div>{item.collection}</div>
-                                            <div className='meta-data-error'>Loading/Meta Data Not Found</div>
-                                        </div>
-                                        <img src={errorImg} className='scroll-img'/>
-                                    </div>
-                                )
-                            }    
+                            return <ScrollItem tokenMint={item.tokenMint} price={item.price} />
                         })
                         return final
                     })
@@ -208,35 +143,7 @@ const WalletTracker = (props) => {
                     {
                         allData?.pages.map(page => {
                             let final = page.map(item => {
-                                let price
-                                let tempImg = photos.filter(img => {
-                                    if(img.mintAddress === item.tokenMint){
-                                        price = item.price
-                                        return img
-                                    }})
-                                if(tempImg[0]){
-                                    return (
-                                        <div className='scroll-item'>
-                                            <div className='scroll-info'>
-                                                <div>{tempImg[0]?.name}</div>
-                                                <img src={solLogo} className='sol-logo'/>
-                                                <div>{price}</div>
-                                                <div className='type'>{item.type}</div>
-                                            </div>
-                                            <img src={tempImg[0]?.image} className='scroll-img'/>
-                                        </div>
-                                        )
-                                }else{
-                                    return(
-                                        <div className='scroll-item'>
-                                            <div className='scroll-info'>
-                                                <div>{item.collection}</div>
-                                                <div className='meta-data-error'>Loading/Meta Data Not Found</div>
-                                            </div>
-                                            <img src={errorImg} className='scroll-img'/>
-                                        </div>
-                                        )
-                                }    
+                                return <ScrollItem tokenMint={item.tokenMint} price={item.price} type={item.type}/>
                             })
                             return final
                         })
@@ -247,28 +154,11 @@ const WalletTracker = (props) => {
     )
 
     //same as the previous two but for sent bids
-    const bidsOut = bidOutData?.map(item => {
-            let tempImg = photos.filter(img => img.mintAddress === item.tokenMint)
-            return (
-                <div className='scroll-item'>
-                    <div className='scroll-info'>{tempImg[0]?.name}</div>
-                    <img src={tempImg[0]?.image ? tempImg[0].image : errorImg} className='scroll-img'/>
-                </div>
-            )
-    })
+    const bidsOut = bidOutData?.map(item => <ScrollItem tokenMint={item.tokenMint} />)
 
     //same as the previous 3 but for recieved bids
-    const bidsIn = bidInData?.map(item => {
-        let tempImg = photos.filter(img => img.mintAddress === item.tokenMint)
-        return (
-            <div className='scroll-item'>
-                <div className='scroll-info'>{tempImg[0]?.name}</div>
-                <img src={tempImg[0]?.image ? tempImg[0].image : errorImg} className='scroll-img'/>
-            </div>
-        )
-    })
+    const bidsIn = bidInData?.map(item => <ScrollItem tokenMint={item.tokenMint} />)
 
-    
     return (
 
         <div className='wallet-tracker'>
