@@ -32,17 +32,15 @@ const WalletTracker = () => {
     })
 
     //once the user inputs a new wallet set the wallet state to the new one and wait a second for it to update then refetch everything above
-    const newWallet = () => {
-        if(userInput.length >= 32 && userInput.length <= 44){
-            setWallet(userInput)
-        setTimeout(() => {
-            refetchTransactions()
-            refetchBidsIn()
-            refetchBidsOut()
-        }, 1000)
-        }else {
-            window.alert('Please enter a valid wallet!!!')
-        }
+    async function newWallet() {
+        const res = await fetch(`https://api-mainnet.magiceden.dev/v2/wallets/${userInput}/tokens`)
+
+        await res.ok ? setWallet(userInput) : window.alert('Please enter a valid wallet!!!')
+        
+
+        refetchTransactions()
+        refetchBidsIn()
+        refetchBidsOut()
     }
 
     const handleScroll = (e) => {
