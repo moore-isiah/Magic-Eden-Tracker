@@ -7,7 +7,6 @@ import WalletTracker from './WalletTracker'
 import WhaleTracker from './WhaleTracker'
 import WhiteListManager from './WhiteListManager'
 
-//public-api-test.solscan.io/account/splTransfers
 export default function App(){
 
     return(
@@ -21,7 +20,7 @@ export default function App(){
                 <WalletTracker />
             </Route>
             <Route path='/whaleTracker'>
-                <WhaleTracker />
+               <WhaleTracker />
             </Route>
             <Route path='/whiteListManager'>
                 <WhiteListManager />

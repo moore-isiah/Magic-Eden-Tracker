@@ -1,0 +1,225 @@
+:root {
+    --info-text-color: #D1E3DD;
+    --back-ground-color-1: #32292F;
+    --back-ground-color-2: #575366;
+    --back-ground-color-3: #292227;
+    --border-color: #B8BDB5;
+    --label-color: #6E7DAB;
+    --label-color-2: #5762D5;
+  }
+
+.whale-tracker {
+    padding: 95px 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    grid-row-gap: 5px;
+  }
+
+  .whale-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20vw;
+    height: 300px;
+    width: 20vw;
+    box-shadow: 0 0 3px 3px var(--back-ground-color-2);
+    background-color: var(--back-ground-color-3);
+    border-radius: 15px;
+    margin: auto;
+    padding: 5px;
+  }
+
+  .small-header-wh {
+    display: flex;
+    flex-direction: row;
+    height: 20px;
+    color: var(--info-text-color);
+    padding: 5px;
+  }
+  
+  .close-whale {
+    width: 20px;
+    border-radius: 5px;
+    text-align: center;
+    padding: 0;
+    margin: 0 0 2px auto;
+    color: red;
+    background-color: var(--back-ground-color-2);
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+  }
+
+  .twitter-logo {
+    width: 17px;
+    margin-left: 5px;
+  }
+
+  .containers-wh {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 130px;
+    width: calc(20vw - 10);
+    overflow-y: scroll;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    background-color: var(--back-ground-color-3);
+    border: 2px solid var(--back-ground-color-2);
+    border-radius: 15px;
+  }
+
+  .containers-wh::-webkit-scrollbar { 
+    width: 0;
+  }
+
+  .container-label-wh {
+    position: absolute;
+    background-color: var(--back-ground-color-2);
+    font-size: 5px;
+    z-index: 0; 
+    border: 1px solid var(--back-ground-color-1);
+    border-radius: 15px;
+    padding: 2px 5px 2px 5px;
+    margin: 5px;
+  }
+
+  .whale-label{
+    color: var(--info-text-color);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .scroll-container-wh {
+    margin-top: 25px;
+    
+  }
+
+  .scroll-img-wh {
+    width: 30px;
+    margin: auto 5px auto auto;
+  }
+
+  .scroll-item-wh {
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    padding: 5px;
+    background-color: var(--back-ground-color-2);
+    border-radius: 15px;
+    margin: 5px;
+    align-items: center;
+  }
+
+  .scroll-info-wh {
+    display: flex;
+    justify-content: space-evenly;
+    color: var(--info-text-color);
+  }
+
+.edit-section {
+  padding: 5px;
+}
+
+.enter-section {
+  display: flex;
+  flex-direction: column;
+  color: var(--info-text-color);
+  background-color: var(--back-ground-color-2);
+  border-radius: 15px;
+  padding: 5px;
+}
+
+.enter-whale {
+  background-color: var(--back-ground-color-3);
+  border: none;
+  color: var(--info-text-color)
+}
+
+.enter-text {
+  margin: 0;
+  text-align: center;
+}
+
+.whale-add-button {
+  align-self: center;
+  background-color: var(--back-ground-color-3);
+  color: var(--info-text-color);
+  border: none;
+  margin-top: 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.whale-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: var(--back-ground-color-2);
+  border-radius: 15px;
+  height: 70px;
+  padding: 5px;
+  flex-wrap: wrap;
+}
+
+.whale-selection-label {
+  margin: 0 0 5px 0;
+  color: var(--info-text-color);
+  font-size: 18px;
+  display: block;
+}
+
+.whale-items-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  height: 42px;
+}
+
+.whale-items-container::-webkit-scrollbar { 
+  width: 7px;
+}
+
+.whale-items-container::-webkit-scrollbar-thumb {
+  background: var(--info-text-color);
+  border-radius: 5px;
+  width: 5px;
+  height: 15px;
+}
+
+.selection-items {
+  margin: auto;
+  color: var(--info-text-color);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: var(--back-ground-color-1);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+input[type="checkbox"]:after {
+  font-family: 'Font Awesome 5 Free';
+  content: "\f00c";
+  font-weight: 900;
+  width: 8px;
+  height: 8px;
+  color: var(--info-text-color);
+  display: none;
+}
+
+input[type="checkbox"]:checked:after {
+  display: block;
+}

@@ -57,7 +57,7 @@ const WalletTracker = () => {
             const imgRes = await fetch(`https://api-mainnet.magiceden.dev/v2/tokens/${token}`)
             const imgData = await imgRes.json()
             return imgData
-        })
+        }, {staleTime: Infinity})
         if(isLoading){
             <div className='scroll-item'>
                 <div className='scroll-info'>Loading...</div>
