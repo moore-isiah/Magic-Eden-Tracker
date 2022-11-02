@@ -13,7 +13,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: auto;
-    grid-row-gap: 5px;
+    row-gap: 5px;
   }
 
   .whale-container {
@@ -26,7 +26,7 @@
     box-shadow: 0 0 3px 3px var(--back-ground-color-2);
     background-color: var(--back-ground-color-3);
     border-radius: 15px;
-    margin: auto;
+    margin: 5px auto 5px auto;
     padding: 5px;
   }
 
