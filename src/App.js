@@ -5,7 +5,8 @@ import Header from './Header'
 import Homepage from './Homepage'
 import WalletTracker from './WalletTracker'
 import WhaleTracker from './WhaleTracker'
-import WhiteListManager from './WhiteListManager'
+import Portfolio from './Portfolio'
+import Footer from './Footer'
 
 export default function App(){
 
@@ -22,11 +23,11 @@ export default function App(){
             <Route path='/whaleTracker'>
                <WhaleTracker />
             </Route>
-            <Route path='/whiteListManager'>
-                <WhiteListManager />
+            <Route path='/Portfolio'>
+                <Portfolio />
             </Route>
         </Switch>
-
+        <Footer />
         </>
     )
 }

@@ -1,19 +1,11 @@
-:root {
-    --info-text-color: #D1E3DD;
-    --back-ground-color-1: #32292F;
-    --back-ground-color-2: #575366;
-    --back-ground-color-3: #292227;
-    --border-color: #B8BDB5;
-    --label-color: #6E7DAB;
-    --label-color-2: #5762D5;
-  }
-
-.whale-tracker {
+.whale-tracker { 
     padding: 95px 0 0 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: auto;
     row-gap: 5px;
+    background-color: var(--back-ground-color-1);
+    height: calc(100vh - 95px);
   }
 
   .whale-container {

@@ -1,19 +1,3 @@
-:root {
-    --primary-bg: #242526;
-    --secondary-bg: #fff;
-    --primary-text-color: #555;
-    --secondary-text-color: #cecece;
-    --border-radius: 8px;
-    --speed: 500ms;
-    --info-text-color: #D1E3DD;
-    --back-ground-color-1: #32292F;
-    --back-ground-color-2: #575366;
-    --back-ground-color-3: #292227;
-    --border-color: #B8BDB5;
-    --label-color: #6E7DAB;
-    --label-color-2: #5762D5;
-  }
-
   body {
     margin: 0;
     background-color: var(--back-ground-color-1);
@@ -32,18 +16,19 @@
   .header {
     height: 60px;
     display: flex;
-    width: calc(100vw - 20px);
+    width: calc(100% - 20px);
     padding: 10px;
     justify-content: space-between;
     box-shadow: 0 3px 2px var(--back-ground-color-3);
     background-color: var(--back-ground-color-3);
     z-index: 3;
-    position: absolute;
+    position: fixed;
   }
 
   .me-logo {
     height: 50px;
     margin-top: 5px;
+    background-color: var(--back-ground-color-3);
   }
 
 
@@ -51,6 +36,7 @@
     font-size: 50px;
     margin: -2px;
     color: white;
+    background-color: var(--back-ground-color-3);
   }
 
   .menu-container{
@@ -67,13 +53,14 @@
     overflow: hidden;
     cursor: pointer;
     margin-left: 70%;
+    background-color: var(--back-ground-color-3);
   }
   
   .dropdown-menu{
     background-color: #fff;
     border-radius: var(--border-radius);
     width: 200px;
-
+    
   }
   
   /* these next 2 are the bit important ones that animate it */
@@ -150,6 +137,7 @@
     align-items: center;
     grid-gap: 30px;
     padding-top: 95px;
+    height: calc(100vh - 95px);
   }
 
   .wallet-submit {

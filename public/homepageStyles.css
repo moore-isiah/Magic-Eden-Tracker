@@ -1,10 +1,4 @@
 :root {
-    --primary-bg: #242526;
-    --secondary-bg: #fff;
-    --primary-text-color: #555;
-    --secondary-text-color: #cecece;
-    --border-radius: 8px;
-    --speed: 500ms;
     --info-text-color: #D1E3DD;
     --back-ground-color-1: #32292F;
     --back-ground-color-2: #575366;
@@ -14,18 +8,28 @@
     --label-color-2: #5762D5;
   }
 
+  body {
+    padding: 0;
+    margin: 0;
+    background-color: var(--back-ground-color-1);
+  }
+
+
 .homepage{
     background: var(--border-color);
-    height: calc(100vh - 100px);
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 100px;
+    overflow: hidden;
 }
 
 .section-container{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: 50%;
-    margin: auto; 
+    justify-content: space-around;
+    margin: 140px auto 20px auto; 
+    width: 100%;
 }
 
 
@@ -39,16 +43,24 @@
     border-bottom: 3px solid var(--back-ground-color-2);
     font-weight: bold;
     font-size: 50px;
+    color: var(--label-color-2);
 }
 
-
-p{
-    font-size: 20px;
+.wallet-text {
+    font-size: 25px;
 }
 
 .section-img {
-    width: 50vw;
-    align-self: center;
+    width: 650px;
     box-shadow: 0 0 3px 3px var(--back-ground-color-2);
     z-index: 0;
+}
+
+.wt1 {
+    margin-left: 50px;
+    z-index: 2;
+}
+
+.whale-text {
+    font-size: 30px;
 }

@@ -25,6 +25,7 @@ return (
                     <DropdownItem link='/' title='Homepage' />
                     <DropdownItem link='/walletTracker' title='Wallet Tracker' />
                     <DropdownItem link='/whaleTracker' title='Whale Tracker' />
+                    <DropdownItem link='/Portfolio' title='Portfolio' />
                 </ul>
             </div>
         </div>
