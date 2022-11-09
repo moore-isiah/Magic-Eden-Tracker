@@ -65,7 +65,8 @@ export default function WhaleTracker () {
         }
 
         const ScrollItem = (props) =>{
-            const {data, isLoading, isError} = useQuery([props.tokenMint], async ({}, token = props.tokenMint) => {
+            const {data, isLoading, isError} = useQuery([props.tokenMint], 
+            async ({}, token = props.tokenMint) => {
                 const imgRes = await fetch(`https://api-mainnet.magiceden.dev/v2/tokens/${token}`)
                 const imgData = await imgRes.json()
                 return imgData
